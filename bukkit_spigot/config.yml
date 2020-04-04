@@ -1,0 +1,23 @@
+##############################################
+#                                            #
+#       BadWordKiller [BWK] - v1.0           #
+#                                            #
+##############################################
+
+# The banned words you want to add
+# 你可自定义新的敏感词列表
+add:
+  - '阿伟死了'
+
+# The banned words you want to delete from the default list
+# 你也可从默认的列表中删除你不需要的敏感词
+remove:
+  - 'fxx'
+
+
+# Messages
+Msg_Reject: "&b[BWK]&c您的消息包含敏感词已被撤回"
+Msg_Reload: "&b[BWK]&a配置文件已重载"
+Msg_NoPerm: "&b[BWK]&c执行失败，尚未找到相关权限"
+
+

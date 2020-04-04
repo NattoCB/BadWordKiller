@@ -47,6 +47,9 @@ public class BadWordDetector extends JavaPlugin{
     		if (args.length == 1 && args[0].equalsIgnoreCase("reload")) {
                 if (p.hasPermission("snowk.bwk.admin") || p.isOp()) {
                 	this.reloadConfig();
+                	Message.msg_Reject = BadWordDetector.snowkPlugin.getConfig().getString("Msg_Reject").replace("&", "¡ì");
+                	Message.msg_Reload = BadWordDetector.snowkPlugin.getConfig().getString("Msg_Reload").replace("&", "¡ì");
+                	Message.msg_NoPerm = BadWordDetector.snowkPlugin.getConfig().getString("Msg_NoPerm").replace("&", "¡ì");
                 	p.sendMessage(Message.msg_Reload);
                 } else {
                 	p.sendMessage(Message.msg_NoPerm);

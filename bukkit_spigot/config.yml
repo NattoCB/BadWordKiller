@@ -26,7 +26,7 @@ remove:
 # Messages 消息
 # if replace was enabled, Msg_Reject will not be triggered
 # 若在上面开启了replace功能而非直接删除消息，那么下方的拒绝消息将不会提示给玩家
-Msg_Reject: "&b[BWK]&c莫生气！莫生气！有什么事都好解决的，不要发晦气的话哦"
+Msg_Reject: "&b[BWK]&a莫生气！莫生气！有什么事都好解决的，不要发晦气的话哦"
 Msg_Reload: "&b[BWK]&a配置文件已重载"
 Msg_NoPerm: "&b[BWK]&c执行失败，尚未找到相关权限"
 

@@ -1,8 +1,10 @@
 package com.snowk.badWordDetector.util;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
+import java.util.TreeSet;
+
+import com.snowk.badWordDetector.util.StringLengthComparator;
 
 /**
  * 引用自CSDN：https://www.cnblogs.com/shihaiming/p/7048379.html 
@@ -16,7 +18,7 @@ import java.util.Set;
  */
 public class SensitivewordFilter {
     @SuppressWarnings("rawtypes")
-    private Map sensitiveWordMap = null;
+	public Map sensitiveWordMap = null;
     public static int minMatchTYpe = 1;      //最小匹配规则
     public static int maxMatchType = 2;      //最大匹配规则
     
@@ -57,7 +59,7 @@ public class SensitivewordFilter {
      * @version 1.0
      */
     public Set<String> getSensitiveWord(String txt , int matchType){
-        Set<String> sensitiveWordList = new HashSet<String>();
+        Set<String> sensitiveWordList = new TreeSet<String>(new StringLengthComparator());  
         
         for(int i = 0 ; i < txt.length() ; i++){
             int length = CheckSensitiveWord(txt, i, matchType);    //判断是否包含敏感字符
@@ -140,11 +142,11 @@ public class SensitivewordFilter {
                     }
                 }
             }
-            else{     //不存在，直接返回
-                break;
+            else{
+            	break;
             }
         }
-        if(matchFlag < 2 || !flag){        //长度必须大于等于1，为词 
+        if(matchFlag < 2 || !flag){        //DFA匹配长度必须大于等于1，为词 
             matchFlag = 0;
         }
         return matchFlag;

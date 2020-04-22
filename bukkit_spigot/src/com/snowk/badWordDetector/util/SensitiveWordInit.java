@@ -1,6 +1,7 @@
 package com.snowk.badWordDetector.util;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.util.Base64;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -135,12 +136,24 @@ public class SensitiveWordInit {
             BufferedReader bufferedReader = new BufferedReader(read);
             String txt = null;
             while((txt = bufferedReader.readLine()) != null){    //读取文件，将文件内容放入到set中
-            	if (!(BadWordDetector.snowkPlugin.getConfig().getStringList("remove").contains(txt))) {
-            		set.add(txt);
+            	// 解码
+            	final Base64.Decoder decoder = Base64.getMimeDecoder();
+            	String decodeTxt = new String(decoder.decode(txt), "GBK");
+            	
+            	// 放入
+            	if (!(BadWordDetector.snowkPlugin.getConfig().getStringList("remove").contains(decodeTxt))) {
+            		set.add(decodeTxt.toLowerCase());
+            	}
+            	if (decodeTxt.length()==1) {
+            		BadWordDetector.banCharList.add(decodeTxt.toLowerCase());
             	}
             	List<String> addList = BadWordDetector.snowkPlugin.getConfig().getStringList("add");
             	for (String i : addList) {
-            		set.add(i);
+            		if (!(i.length()==1)) { //DFA 算法仅支持长度大于1的匹配，若长度只有1，则进入单字检查功能
+            			set.add(i.toLowerCase());
+            		} else {
+            			BadWordDetector.banCharList.add(i.toLowerCase());
+            		}
             	}
             }
 

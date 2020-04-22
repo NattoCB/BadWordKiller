@@ -1,8 +1,16 @@
 ##############################################
 #                                            #
-#       BadWordKiller [BWK] - v1.0           #
+#       BadWordKiller [BWK] - v1.1           #
 #                                            #
 ##############################################
+
+# replace or delete message?
+# 监测到敏感词后删除消息还是替换成符号？[默认替换]
+replace: true
+
+# mask that will replace the sensitive words
+# 若开启替换，则把敏感词替换为如下掩码
+mask: '爱你'
 
 # The banned words you want to add
 # 你可自定义新的敏感词列表
@@ -12,11 +20,13 @@ add:
 # The banned words you want to delete from the default list
 # 你也可从默认的列表中删除你不需要的敏感词
 remove:
-  - 'fxx'
+  - 'fxxx'
 
 
-# Messages
-Msg_Reject: "&b[BWK]&c您的消息包含敏感词已被撤回"
+# Messages 消息
+# if replace was enabled, Msg_Reject will not be triggered
+# 若在上面开启了replace功能而非直接删除消息，那么下方的拒绝消息将不会提示给玩家
+Msg_Reject: "&b[BWK]&c莫生气！莫生气！有什么事都好解决的，不要发晦气的话哦"
 Msg_Reload: "&b[BWK]&a配置文件已重载"
 Msg_NoPerm: "&b[BWK]&c执行失败，尚未找到相关权限"
 

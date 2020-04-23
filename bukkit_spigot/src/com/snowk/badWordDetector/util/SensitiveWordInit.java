@@ -3,11 +3,11 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.Base64;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.TreeSet;
 
 import com.snowk.badWordDetector.BadWordDetector;
 
@@ -128,11 +128,11 @@ public class SensitiveWordInit {
      */
     @SuppressWarnings("resource")
     private Set<String> readSensitiveWordFile() throws Exception{
-        Set<String> set = null;
+        Set<String> set = new TreeSet<String>(new StringLengthComparator());  
         
         InputStreamReader read = new InputStreamReader(this.getClass().getClassLoader().getResourceAsStream("resource/SensitiveWord.txt"),ENCODING);
         try {
-            set = new HashSet<String>();
+            set = new TreeSet<String>(new StringLengthComparator());  
             BufferedReader bufferedReader = new BufferedReader(read);
             String txt = null;
             while((txt = bufferedReader.readLine()) != null){    //读取文件，将文件内容放入到set中
@@ -140,19 +140,19 @@ public class SensitiveWordInit {
             	final Base64.Decoder decoder = Base64.getMimeDecoder();
             	String decodeTxt = new String(decoder.decode(txt), "GBK");
             	
-            	// 放入
-            	if (!(BadWordDetector.snowkPlugin.getConfig().getStringList("remove").contains(decodeTxt))) {
+            	// 从文件读取的词汇录入
+            	if (decodeTxt.length()==1) { // 先判断是否为单字（DFA无法处理单字）
+            		BadWordDetector.banCharList.add(decodeTxt.toLowerCase());
+            	} else if (!(BadWordDetector.snowkPlugin.getConfig().getStringList("remove").contains(decodeTxt))) { // 则若解码后的非单关键字不在忽略列表中，则添加至hashMap 
             		set.add(decodeTxt.toLowerCase());
             	}
-            	if (decodeTxt.length()==1) {
-            		BadWordDetector.banCharList.add(decodeTxt.toLowerCase());
-            	}
-            	List<String> addList = BadWordDetector.snowkPlugin.getConfig().getStringList("add");
-            	for (String i : addList) {
-            		if (!(i.length()==1)) { //DFA 算法仅支持长度大于1的匹配，若长度只有1，则进入单字检查功能
-            			set.add(i.toLowerCase());
-            		} else {
+            	// 从config读取的词汇录入
+            	List<String> configAddList = BadWordDetector.snowkPlugin.getConfig().getStringList("add");
+            	for (String i : configAddList) {
+            		if (i.length()==1) { //DFA 算法仅支持长度大于1的匹配，若长度只有1，则进入单字检查功能
             			BadWordDetector.banCharList.add(i.toLowerCase());
+            		} else {
+            			set.add(i.toLowerCase());
             		}
             	}
             }

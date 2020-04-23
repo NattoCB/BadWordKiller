@@ -119,6 +119,7 @@ public class CommandHandler extends CommandFramework {
 							}
 	    				}
 	                	BadWordDetector.snowkPlugin.getConfig().set("mask", argConcat);
+	                	doReload();
 	                	p.sendMessage(ConfigHandler.msg_maskChange);
 	    			} else {
 	                	getHelper(p);

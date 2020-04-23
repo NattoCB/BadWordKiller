@@ -165,7 +165,7 @@ public class ChatListener implements Listener {
     	    buffString_1 = m3.replaceAll("").trim();
         	isSensitive = doCharCheck(isSensitive,e,buffString_1);
    		}
-    	String logger_9 = "§7[§e!§7] §6正在处理字符串（DFA-补）单字单筛：" + buffString_1;
+    	String logger_9 = "§7[§e!§7] §6正在处理字符串（DFA-补）单字单筛：" + e.getMessage();
     	
     	if (buffString_1.length()==0) { //在强制替换后避免发出空消息
     		buffString_1 = ConfigHandler.maskSymbol;
@@ -200,7 +200,7 @@ public class ChatListener implements Listener {
     		} else {
         		player.sendMessage(logger_11);
     		}
-    		player.sendMessage("§7[§c!§7] §cBadWordKiller §adebug报告完毕， §e输入 §ccancel §e退出检测");
+    		player.sendMessage("§7[§c!§7] §c§lBadWordKiller §a§ldebug报告完毕， §e输入 §ccancel §e退出检测");
     		player.sendMessage("");
     		e.setCancelled(true);
     	}

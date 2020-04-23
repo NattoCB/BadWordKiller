@@ -1,33 +1,12 @@
-##############################################
-#                                            #
-#       BadWordKiller [BWK] - v1.1           #
-#                                            #
-##############################################
-
-# replace or delete message?
-# 监测到敏感词后删除消息还是替换成符号？[默认替换]
+# See more information at: https://www.mcbbs.net/forum.php?mod=viewthread&tid=1007749
 replace: true
-
-# mask that will replace the sensitive words
-# 若开启替换，则把敏感词替换为如下掩码
-mask: '爱你'
-
-# The banned words you want to add
-# 你可自定义新的敏感词列表
+mask: 爱你
 add:
-  - '阿伟死了'
-
-# The banned words you want to delete from the default list
-# 你也可从默认的列表中删除你不需要的敏感词
+- 阿伟死了
 remove:
-  - 'fxxx'
-
-
-# Messages 消息
-# if replace was enabled, Msg_Reject will not be triggered
-# 若在上面开启了replace功能而非直接删除消息，那么下方的拒绝消息将不会提示给玩家
-Msg_Reject: "&b[BWK]&a莫生气！莫生气！有什么事都好解决的，不要发晦气的话哦"
-Msg_Reload: "&b[BWK]&a配置文件已重载"
-Msg_NoPerm: "&b[BWK]&c执行失败，尚未找到相关权限"
-
-
+- fxxx
+Msg_Reject: '&b[BWK]&a莫生气！莫生气！有什么事都好解决的，不要发晦气的话哦'
+Msg_Reload: '&b[BWK]&a配置文件已重载'
+Msg_test: '&3[&7!&3]&e 敏感句测试已开启，输入&ccancel&e取消测试'
+Msg_NoPerm: '&b[BWK]&c执行失败，尚未找到相关权限'
+Msg_maskChange: '&b[BWK]&a掩码替换成功!'

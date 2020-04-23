@@ -8,16 +8,19 @@ import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import com.snowk.badWordDetector.listener.ChatListener;
+import com.snowk.badWordDetector.listener.TellCmdListener;
+//import com.snowk.badWordDetector.metrics.Metrics;
 import com.snowk.badWordDetector.command.CommandFramework;
 import com.snowk.badWordDetector.command.CommandHandler;
+import com.snowk.badWordDetector.command.ConstructTabCompleter;
 
 public class BadWordDetector extends JavaPlugin {
 	
 	public static BadWordDetector snowkPlugin;
 	public static List<String> banCharList = new ArrayList<String>();
+	public static String VERSION = "";
 	
     @Override
-    @SuppressWarnings("resource")
     public void onEnable() {
     	
     	// this
@@ -32,10 +35,26 @@ public class BadWordDetector extends JavaPlugin {
         // commands
         CommandFramework.register(this, new CommandHandler("badwordkiller"));
     	CommandFramework.register(this, new CommandHandler("bwk"));
+    	CommandFramework.register(this, new CommandHandler("bwkiller"));
+    	getCommand("badwordkiller").setTabCompleter(new ConstructTabCompleter());
+    	getCommand("bwk").setTabCompleter(new ConstructTabCompleter());
+    	getCommand("bwkiller").setTabCompleter(new ConstructTabCompleter());
     	
     	// listeners
         Bukkit.getPluginManager().registerEvents(new ChatListener(), this);
+        Bukkit.getPluginManager().registerEvents(new TellCmdListener(), this);
 
+        // bStats  TODO
+//    	int pluginId = 6684;
+//    	Metrics metrics = new Metrics(this,pluginId);
+//    	metrics.addCustomChart(new Metrics.SingleLineChart("players", new Callable<Integer>() {
+//    		@Override
+//    		public Integer call() throws Exception {
+//    			// (This is useless as there is already a player chart by default.)
+//    			return Bukkit.getOnlinePlayers().size();
+//          }
+//    	}));
+        
         // loggers
     	getLogger().info("===================================================================");
     	getLogger().info("  ____            ___        __            _ _  ___ _ _           ");

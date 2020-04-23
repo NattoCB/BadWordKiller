@@ -1,9 +1,11 @@
 package com.snowk.badWordDetector.listener;
 
+import java.util.ArrayList;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
@@ -17,11 +19,20 @@ public class ChatListener implements Listener {
 	String REGEX_1 = "[a-zA-Z\\u4e00-\\u9fa5]"; // DFA Cycle 1 RegEx
 	String REGEX_2 = "[\\u4e00-\\u9fa5]"; // DFA Cycle 2 RegEx
 	String REGEX_3 = "[操干日]";  // 中性词 1 类 [排除单用/混用问题]
-	String REGEX_4 = "[比币逼笔爹娘爸妈爷奶儿孙姑叔舅姨祖宗先辈人狗猪鸡鸭的吗a-zA-Z&\\&0-9]"; // 中性词 2类 [排除激烈/中性问题]
+	String REGEX_4 = "[比币逼笔爹娘爸妈爷奶儿孙哥姐弟妹姑叔舅姨祖宗先辈人狗猪鸡鸭的吗a-zA-Z&\\&0-9]"; // 中性词 2类 [排除激烈/中性问题]
+	String CANCEL_DEBUG = "cancel"; // cancel debug function
+	
+	/** playerMatcher (ArrayList)
+	 *  k: Player Name (String)
+	 *  function: save PlayerName when they use /bwk test command,
+	 *  		  then for matching them with the next chat.
+	 */
+	public static ArrayList<String> playerMatcher = new ArrayList<String>();
 	
 	@EventHandler
 	public void onChat(AsyncPlayerChatEvent e) {
-
+		
+		Player player = e.getPlayer();
 		String inputMsg = e.getMessage(); // 原始字符串，若无敏感词，则不可变动
 
 		/**
@@ -30,7 +41,6 @@ public class ChatListener implements Listener {
 		 */
 		
 		boolean isSensitive = false; 
-		boolean printLog = true;
 		SensitivewordFilter filter = new SensitivewordFilter();
 		String logger_1 = "§7[§c!§7] §d§lBadWordKiller 开始检测 ";
 		String logger_2 = "§7[§a!§7] §3敏感词库总数：" + filter.sensitiveWordMap.size();
@@ -74,7 +84,7 @@ public class ChatListener implements Listener {
     		}
         } else {
     		if (!set.isEmpty()) {  // 敏感句处理：删除
-    			e.getPlayer().sendMessage(ConfigHandler.msg_Reject);
+    			player.sendMessage(ConfigHandler.msg_Reject);
     			e.setCancelled(true);
     			return;
     		}
@@ -132,7 +142,7 @@ public class ChatListener implements Listener {
     		} 
         } else {
     		if (!set2.isEmpty()) {  // 敏感句处理：删除
-    			e.getPlayer().sendMessage(ConfigHandler.msg_Reject);
+    			player.sendMessage(ConfigHandler.msg_Reject);
     			e.setCancelled(true);
     			return;
     		}
@@ -162,23 +172,36 @@ public class ChatListener implements Listener {
     	}
     	
     	String logger_10 = "§7[§4!§7] §c§l最终敏感句判断结果：§a§l" + isSensitive;
+    	String logger_11 = "§7[§4!§7] §c§l最终敏感句判断结果：§c§l" + isSensitive;
     	
         /**
 		 * Log Print for Debugging
 		 * @Description:  Log Print for Debugging
 		 */
-        
-    	if (printLog) {
-    		e.getPlayer().sendMessage(logger_1);
-    		e.getPlayer().sendMessage(logger_2);
-    		e.getPlayer().sendMessage(logger_3);
-    		e.getPlayer().sendMessage(logger_4);
-    		e.getPlayer().sendMessage(logger_5);
-    		e.getPlayer().sendMessage(logger_6);
-    		e.getPlayer().sendMessage(logger_7);
-    		e.getPlayer().sendMessage(logger_8);
-    		e.getPlayer().sendMessage(logger_9);
-    		e.getPlayer().sendMessage(logger_10);
+    	
+    	if (playerMatcher.contains(player.getName())) {
+    		if (e.getMessage().equalsIgnoreCase(CANCEL_DEBUG)) {
+            	playerMatcher.remove(player.getName());
+            	e.setCancelled(true);
+            	player.sendMessage("§7[§c!§7] §d§lBadWordKiller debug功能已关闭！");
+            	return;
+            } 
+    		player.sendMessage(logger_1);
+    		player.sendMessage(logger_2);
+    		player.sendMessage(logger_3);
+    		player.sendMessage(logger_4);
+    		player.sendMessage(logger_5);
+    		player.sendMessage(logger_6);
+    		player.sendMessage(logger_7);
+    		player.sendMessage(logger_8);
+    		player.sendMessage(logger_9);
+    		if (isSensitive) {
+        		player.sendMessage(logger_10);
+    		} else {
+        		player.sendMessage(logger_11);
+    		}
+    		player.sendMessage("§7[§c!§7] §cBadWordKiller §adebug报告完毕， §e输入 §ccancel §e退出检测");
+    		player.sendMessage("");
     		e.setCancelled(true);
     	}
 	}

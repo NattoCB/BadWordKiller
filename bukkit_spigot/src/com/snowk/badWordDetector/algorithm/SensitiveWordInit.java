@@ -1,4 +1,4 @@
-package com.snowk.badWordDetector.util;
+package com.snowk.badWordDetector.algorithm;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.Base64;
@@ -10,6 +10,7 @@ import java.util.Set;
 import java.util.TreeSet;
 
 import com.snowk.badWordDetector.BadWordDetector;
+import com.snowk.badWordDetector.util.StringLengthComparator;
 
 /**
  * ÒýÓÃ×ÔCSDN£ºhttps://www.cnblogs.com/shihaiming/p/7048379.html 

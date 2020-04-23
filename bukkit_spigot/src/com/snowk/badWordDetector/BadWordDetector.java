@@ -5,11 +5,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.bukkit.Bukkit;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
+
 import com.snowk.badWordDetector.listener.ChatListener;
+import com.snowk.badWordDetector.command.CommandFramework;
+import com.snowk.badWordDetector.command.CommandHandler;
 
 public class BadWordDetector extends JavaPlugin {
 	
@@ -19,15 +19,24 @@ public class BadWordDetector extends JavaPlugin {
     @Override
     @SuppressWarnings("resource")
     public void onEnable() {
+    	
+    	// this
     	snowkPlugin = this;
     	
+    	// configurations
         if (!new File("./plugins/BadWordKiller/config.yml").exists()) {
             this.saveDefaultConfig();
             this.getLogger().info("BadWordKiller[BWkiller] successfully created config file");
         }	
         
+        // commands
+        CommandFramework.register(this, new CommandHandler("badwordkiller"));
+    	CommandFramework.register(this, new CommandHandler("bwk"));
+    	
+    	// listeners
         Bukkit.getPluginManager().registerEvents(new ChatListener(), this);
 
+        // loggers
     	getLogger().info("===================================================================");
     	getLogger().info("  ____            ___        __            _ _  ___ _ _           ");
     	getLogger().info(" | __ )  __ _  __| \\ \\      / /__  _ __ __| | |/ (_) | | ___ _ __ ");
@@ -43,32 +52,6 @@ public class BadWordDetector extends JavaPlugin {
     @Override
     public void onDisable() {
     	getLogger().info("BadWordKiller[BWkiller] successfully disabled!");
-    	
     }
     
-    public boolean onCommand(final CommandSender commandSender, final Command command, final String label, final String[] args) {
-    	final Player p = (Player)commandSender;
-    	if (label.equalsIgnoreCase("bwkiller") || label.equalsIgnoreCase("bwk")) {
-            if (args.length == 0) {
-            	p.sendMessage("¡ìe======= BadWordKiller By:Bear ========");
-            	p.sendMessage("¡ìa/bwk reload  ¡ì3- reload the plugin");
-            }
-    		
-    		if (args.length == 1 && args[0].equalsIgnoreCase("reload")) {
-                if (p.hasPermission("snowk.bwk.admin") || p.isOp()) {
-                	this.reloadConfig();
-                	Message.replaceEnable = BadWordDetector.snowkPlugin.getConfig().getBoolean("replace");
-                	Message.maskSymbol = BadWordDetector.snowkPlugin.getConfig().getString("mask");
-                	Message.msg_Reject = BadWordDetector.snowkPlugin.getConfig().getString("Msg_Reject").replace("&", "¡ì");
-                	Message.msg_Reload = BadWordDetector.snowkPlugin.getConfig().getString("Msg_Reload").replace("&", "¡ì");
-                	Message.msg_NoPerm = BadWordDetector.snowkPlugin.getConfig().getString("Msg_NoPerm").replace("&", "¡ì");
-                	p.sendMessage(Message.msg_Reload);
-                } else {
-                	p.sendMessage(Message.msg_NoPerm);
-                }
-                return true;
-            }
-    	}
-    	return false;
-    }
 }

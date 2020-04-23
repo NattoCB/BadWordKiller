@@ -1,4 +1,4 @@
-package com.snowk.badWordDetector.util;
+package com.snowk.badWordDetector.algorithm;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;

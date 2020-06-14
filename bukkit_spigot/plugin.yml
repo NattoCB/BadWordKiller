@@ -1,7 +1,6 @@
 name: BadWordKiller
 main: com.snowk.badWordDetector.BadWordDetector
 version: 1.2.0
-api-version: 1.12
 
 commands: 
   badwordkiller:
